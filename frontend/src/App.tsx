@@ -1,12 +1,14 @@
 import axios, { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const TMDB_API_KEY = import.meta.env.VITE_TMDB_API_KEY
 
 type MovieData = {
-  original_title: any;
-  poster_path: any;
+  original_title: string;
+  poster_path: string;
+  id: number
 }
 
 type GenreType = {
@@ -15,8 +17,9 @@ type GenreType = {
 }
 
 const MovieCard = (movie: MovieData) => {
+  const navigate = useNavigate()
   return(
-    <div>
+    <div onClick={() => navigate(String(movie.id))}>
       <img className='rounded-md shadow-md cursor-pointer' src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} width={250} alt={movie.original_title} />
     </div>
   )
@@ -35,6 +38,7 @@ const App = () => {
       const movieDataArray = data.results.map((movie_data: MovieData) => ({
         "original_title": movie_data.original_title,
         "poster_path": movie_data.poster_path,
+        "id": movie_data.id
       }));
       setMovieData(movieDataArray)
     }
@@ -66,14 +70,14 @@ const App = () => {
       const axiosRequests: Promise<AxiosResponse<any, any>>[] = recommendations.map((id) => {
         return axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=${TMDB_API_KEY}&language=en-US`)
       })
-
       Promise.all(axiosRequests).then((responses) => {
+        console.log(responses)
         const movieDataArray = responses.map((movie_data) => ({
           "original_title": movie_data.data.original_title,
           "poster_path": movie_data.data.poster_path,
+          "id": movie_data.data.id
         }));
         setMovieData(movieDataArray);
-        console.log(movieDataArray)
       }).catch((error) => {
         console.error("Error fetching movie data:", error);
       });
@@ -92,15 +96,16 @@ const App = () => {
     const movieDataArray = data.results.map((movie_data: MovieData) => ({
       "original_title": movie_data.original_title,
       "poster_path": movie_data.poster_path,
+      "id": movie_data.id
     }));
     setMovieData(movieDataArray)
     setActiveGenre(genere)
   }
 
   return (
-    <div className='bg-primary min-h-screen text-neutral-50 p-20'>
+    <div className='bg-primary min-h-screen text-neutral-50 px-20 py-10'>
       <form className='flex gap-5'>
-        <input onChange={(e) => handleInput(e)} className='w-full bg-secondary p-2 rounded outline-none' type="text" placeholder='search by keyword, genre' />
+        <input onChange={(e) => handleInput(e)} className='w-full bg-secondary p-2 px-4 rounded outline-none' type="text" placeholder='search by keyword, genre' />
         <button onClick={(e) => handleSubmit(e)} className={`${loading && 'animate-spin'} bg-secondary px-4 p-2 rounded border border-secondary hover:bg-secondary/50 hover:duration-400 hover:border-neutral-500`}>Recommend</button>
       </form>
       {errorMessage && (<div className='my-5 pl-5 bg-red-500 p-2 rounded-md border-2 border-red-950'>{errorMessage}</div>)}
