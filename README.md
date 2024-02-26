@@ -1,7 +1,6 @@
 <!-- ABOUT THE PROJECT -->
 # Movie Recommendation App
-![image](https://github.com/Chetan3327/movie-recommendation-app/assets/120830933/6c876262-5805-4a0f-897d-6314f3240a44)
-
+![image](image.png)
 
 This **Movie Recommendation App** is a web application that utilizes the Sentence Transformers library to generate embeddings and recommend movies based on their similarity. 
 Frontend is built with `React` and for backend with `FastAPI` and uses Sentence Transformers for text embedding and a recommendation model to suggest relevant movies from the TMDB dataset.
