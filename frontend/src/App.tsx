@@ -52,7 +52,7 @@ const App = () => {
       setGeneres(generes)
     }
     fetchGenre()
-  })
+  }, [])
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
