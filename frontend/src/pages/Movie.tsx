@@ -26,7 +26,6 @@ const Movie = () => {
         }
         const fetchCast = async () => {
             const {data} = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${TMDB_API_KEY}&language`)
-            console.log(data, 'ad')
         }
         fetchMovieData()
         fetchCast()
