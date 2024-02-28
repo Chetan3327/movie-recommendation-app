@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (max-width: 576px) {
+    /* Small screens */
+    .ten {
+      justify-content: flex-start; /* Align genres to the start on small screens */
+    }
+    .ten > span:nth-child(n + 11) {
+      display: none; /* Hide genres beyond the 10th on small screens */
+    }
+}

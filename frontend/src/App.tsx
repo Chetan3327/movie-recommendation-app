@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
+import { VscLoading } from 'react-icons/vsc'
 import { useNavigate } from 'react-router-dom'
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
@@ -61,6 +62,7 @@ const App = () => {
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     if(!searchTerm){
+      setErrorMessage("Please enter keywords!")
       return 
     }
     setLoading(true)
@@ -86,10 +88,10 @@ const App = () => {
       setErrorMessage("Error fetching recommendations. Please try again later.");
     }
     setLoading(false)
-    setErrorMessage("")
   }
 
   const fetchByGenre = async (genere: number) => {
+    setErrorMessage("")
     const {data} = await axios.get(`https://api.themoviedb.org/3/discover/movie?with_genres=${genere}&api_key=${TMDB_API_KEY}&with_origin_country=IN&page=1`)
     console.log(data)
 
@@ -103,14 +105,14 @@ const App = () => {
   }
 
   return (
-    <div className='bg-primary min-h-screen text-neutral-50 px-20 py-10'>
-      <form className='flex gap-5'>
+    <div className='bg-primary min-h-screen text-neutral-50 px-10 py-10 md:px-20'>
+      <form className='flex gap-4 flex-col sm:flex-row'>
         <input onChange={(e) => handleInput(e)} className='w-full bg-secondary p-2 px-4 rounded outline-none' type="text" placeholder='search by keyword, genre' />
-        <button onClick={(e) => handleSubmit(e)} className={`${loading && 'animate-spin'} bg-secondary px-4 p-2 rounded border border-secondary hover:bg-secondary/50 hover:duration-400 hover:border-neutral-500`}>Recommend</button>
+        <button onClick={(e) => handleSubmit(e)} className={`bg-secondary px-4 p-2 rounded border border-secondary hover:bg-secondary/50 hover:duration-400 hover:border-neutral-500`}>{loading ? <VscLoading className='animate-spin' /> : 'Recommend'}</button>
       </form>
       {errorMessage && (<div className='my-5 pl-5 bg-red-500 p-2 rounded-md border-2 border-red-950'>{errorMessage}</div>)}
       {generes && (
-        <div className='flex flex-wrap gap-2 my-5'>
+        <div className='flex flex-wrap gap-2 my-5 ten'>
           {generes.map((genere, idx) => {
             return(<span onClick={() => fetchByGenre(genere.id)} key={idx} className={`px-4 p-2 bg-secondary cursor-pointer rounded-sm border border-secondary hover:border-neutral-500 ${genere.id === activeGenre && 'bg-white text-secondary'}`}>{genere.name}</span>)
           })}
