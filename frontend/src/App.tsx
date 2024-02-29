@@ -108,7 +108,7 @@ const App = () => {
     <div className='bg-primary min-h-screen text-neutral-50 px-10 py-10 md:px-20'>
       <form className='flex gap-4 flex-col sm:flex-row'>
         <input onChange={(e) => handleInput(e)} className='w-full bg-secondary p-2 px-4 rounded outline-none' type="text" placeholder='search by keyword, genre' />
-        <button onClick={(e) => handleSubmit(e)} className={`bg-secondary px-4 p-2 rounded border border-secondary hover:bg-secondary/50 hover:duration-400 hover:border-neutral-500`}>{loading ? <VscLoading className='animate-spin' /> : 'Recommend'}</button>
+        <button onClick={(e) => handleSubmit(e)} className={`bg-secondary px-4 p-2 rounded border border-secondary hover:bg-secondary/50 hover:duration-400 hover:border-neutral-500 flex justify-center items-center`}>{loading ? <VscLoading className='animate-spin' /> : 'Recommend'}</button>
       </form>
       {errorMessage && (<div className='my-5 pl-5 bg-red-500 p-2 rounded-md border-2 border-red-950'>{errorMessage}</div>)}
       {generes && (
